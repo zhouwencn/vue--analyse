@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>动态导入</title>
+    <script src="../vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div>结果为：{{result}}</div>
+      <button @click="add">加法</button>
+      <button @click="decrease">减法</button>
+    </div>
+    <script>
+      const app = new Vue({
+        el: '#app',
+        data() {
+          return {
+            a: 10,
+            b: 20,
+            result: 0
+          }
+        },
+        created() {},
+        methods: {
+          add() {
+            import('./test.js').then((module) => {
+              console.log(module)
+              // 使用模块中的导出项
+              this.result = module.add(this.a, this.b)
+            })
+          },
+          decrease() {
+            this.result = decrease(this.a, this.b)
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

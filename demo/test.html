@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../vue.js"></script>
+  </head>
+  <style>
+    .sub_child::after {
+      content: attr(data-content);
+      background-color: rgb(255, 255, 255);
+    }
+  </style>
+  <body>
+    <div id="app">
+      <child :msg="msg" :parent="parent"></child>
+    </div>
+    <script>
+      // 孙组件
+      const sub_child = {
+        props: {
+          sub: String
+        },
+        render(h) {
+          return h(
+            'div',
+            {
+              class: 'sub_child',
+              on: {
+                click: this.clickHandler
+              }
+            },
+            this.sub
+          )
+        },
+        methods: {
+          clickHandler() {
+            alert('孙组件')
+          }
+        }
+      }
+      // 子组件
+      const child = {
+        components: {
+          sub_child
+        },
+        props: {
+          parent: String
+        },
+        data() {
+          return {
+            child: '子组件'
+          }
+        },
+        render(h) {
+          return h(
+            'div',
+            {
+              style: {
+                backgroundColor: 'red'
+              }
+            },
+            [
+              h('h1', this.child),
+              // 孙组件
+              h(sub_child, {
+                attrs: {
+                  'data-content': 'content'
+                },
+                props: {
+                  sub: '孙组件'
+                }
+              }),
+              // 子组件没用props接收的，就会在attrs里面
+              h('div', {}, this.$attrs['msg'])
+            ]
+          )
+        }
+      }
+      // 根组件
+      const app = new Vue({
+        components: {
+          child
+        },
+        data() {
+          return {
+            msg: 'msg_parent',
+            parent: 'parent'
+          }
+        }
+      }).$mount('#app')
+    </script>
+  </body>
+</html>
