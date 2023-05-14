@@ -30,9 +30,16 @@
               class: 'sub_child',
               on: {
                 click: this.clickHandler
-              }
+              },
+              // 如果组件是其它组件的子组件，需为插槽指定名称
+              slot: 'sub_child_slot'
             },
-            this.sub
+            [
+              h('div', this.sub),
+              h('slot', {
+                name: 'header'
+              })
+            ]
           )
         },
         methods: {
@@ -72,7 +79,13 @@
                 },
                 // 给孙组件传递props
                 props: {
-                  sub: '孙组件'
+                  sub: '孙组件',
+                  text: '作用域插槽'
+                },
+                // 作用域插槽的格式为
+                // { name: props => VNode | Array<VNode> }
+                scopedSlots: {
+                  header: () => h('h1', 'test')
                 }
               }),
               // 子组件没用props接收的，就会在attrs里面
