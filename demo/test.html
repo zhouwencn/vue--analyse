@@ -66,9 +66,11 @@
               h('h1', this.child),
               // 孙组件
               h(sub_child, {
+                // 给孙组件传递attrs
                 attrs: {
                   'data-content': 'content'
                 },
+                // 给孙组件传递props
                 props: {
                   sub: '孙组件'
                 }
