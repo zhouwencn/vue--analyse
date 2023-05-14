@@ -23,6 +23,14 @@
         props: {
           sub: String
         },
+        data() {
+          return {
+            user: {
+              name: 'sub_child',
+              age: 19
+            }
+          }
+        },
         render(h) {
           return h(
             'div',
@@ -30,15 +38,21 @@
               class: 'sub_child',
               on: {
                 click: this.clickHandler
-              },
-              // 如果组件是其它组件的子组件，需为插槽指定名称
-              slot: 'sub_child_slot'
+              }
             },
             [
               h('div', this.sub),
-              h('slot', {
-                name: 'header'
-              })
+              // 孙组件通过scopedSlots定义一个默认的作用域插槽，并传递user数据
+              this.$scopedSlots.default({
+                user: this.user
+              }),
+              //定义一个test的作用域插槽， 触发debugger
+              this.$scopedSlots.test({
+                // text: 'Hello from Child'
+              }),
+              h('h2', '普通demo插槽'),
+              // 定义一个普通的demo插槽
+              this.$slots.demo
             ]
           )
         },
@@ -72,22 +86,35 @@
             [
               h('h1', this.child),
               // 孙组件
-              h(sub_child, {
-                // 给孙组件传递attrs
-                attrs: {
-                  'data-content': 'content'
+              h(
+                sub_child,
+                {
+                  // 给孙组件传递attrs
+                  attrs: {
+                    'data-content': 'content'
+                  },
+                  // 给孙组件传递props
+                  props: {
+                    sub: '孙组件',
+                    text: '作用域插槽'
+                  },
+                  // 处理子组件定义的作用域插槽
+                  scopedSlots: {
+                    default: (props) => {
+                      console.log(props)
+                      return h(
+                        'div',
+                        `孙组件的默认插槽， info信息为name:${props.user.name}, age:${props.user.age}`
+                      )
+                    },
+                    test: (props) => {
+                      // debugger
+                    }
+                  }
                 },
-                // 给孙组件传递props
-                props: {
-                  sub: '孙组件',
-                  text: '作用域插槽'
-                },
-                // 作用域插槽的格式为
-                // { name: props => VNode | Array<VNode> }
-                scopedSlots: {
-                  header: () => h('h1', 'test')
-                }
-              }),
+                // 处理子组件定义的普通插槽，通过slot这个数据对象属性
+                [h('template', { slot: 'demo' }, [h('p', '这是插槽内容')])]
+              ),
               // 子组件没用props接收的，就会在attrs里面
               h('div', {}, this.$attrs['msg'])
             ]

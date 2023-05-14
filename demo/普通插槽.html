@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../vue.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      Vue.component('child', {
+        data() {
+          return {
+            msg: 'child'
+          }
+        },
+        render(h) {
+          return h('div', [
+            h('p', '这是子组件'),
+            // 使用 $slots 获取插槽内容，如果没有则显示 '默认内容'
+            this.$scopedSlots.default({
+              msg: this.msg
+            }),
+            this.$slots.demo
+          ])
+        }
+      })
+      new Vue({
+        el: '#app',
+        render(h) {
+          return h('div', [
+            h(
+              'child',
+              {
+                scopedSlots: {
+                  default: (props) => h('div', props.msg)
+                }
+              },
+              [
+                // 通过名为 demo 的插槽填充内容
+                h('template', { slot: 'demo' }, [h('p', '这是插槽内容')])
+              ]
+            )
+          ])
+        }
+      })
+    </script>
+  </body>
+</html>
