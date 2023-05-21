@@ -10,6 +10,7 @@
   <body>
     <div id="app">
       <div>结果为：{{result}}</div>
+      <div v-if="result === 30">result</div>
       <div id="extend"></div>
       <button @click="add">加法</button>
       <button @click="decrease">减法</button>
@@ -25,7 +26,15 @@
             result: 0
           }
         },
-        created() {},
+        created() {
+          console.log('created')
+        },
+        mounted() {
+          console.log('mounted')
+        },
+        updated() {
+          console.log('updated')
+        },
         methods: {
           add() {
             this.result = add(this.a, this.b)
@@ -33,21 +42,26 @@
           decrease() {
             this.result = decrease(this.a, this.b)
           }
+        },
+        watch: {
+          result() {
+            console.log('watch')
+          }
         }
       })
 
-      const template = {
-        template: `<div style="color: red">{{firstName}} {{lastName}} aka {{alias}}</div>`,
-        data: function () {
-          return {
-            firstName: 'Walter',
-            lastName: 'White',
-            alias: 'Heisenberg'
-          }
-        }
-      }
-      const component = Vue.extend(template)
-      new component().$mount('#extend')
+      // const template = {
+      //   template: `<div style="color: red">{{firstName}} {{lastName}} aka {{alias}}</div>`,
+      //   data: function () {
+      //     return {
+      //       firstName: 'Walter',
+      //       lastName: 'White',
+      //       alias: 'Heisenberg'
+      //     }
+      //   }
+      // }
+      // const component = Vue.extend(template)
+      // new component().$mount('#extend')
     </script>
   </body>
 </html>

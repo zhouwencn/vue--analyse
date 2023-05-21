@@ -11,6 +11,8 @@
     : ((global =
         typeof globalThis !== 'undefined' ? globalThis : global || self),
       (global.Vue = factory()))
+  console.log(global)
+  debugger
 })(this, function () {
   'use strict'
 
@@ -2697,6 +2699,7 @@
   }
   var currentRenderingInstance = null
   function renderMixin(Vue) {
+    debugger
     // install runtime convenience helpers
     installRenderHelpers(Vue.prototype)
     Vue.prototype.$nextTick = function (fn) {
@@ -2951,6 +2954,7 @@
     target$1 = undefined
   }
   function eventsMixin(Vue) {
+    debugger
     var hookRE = /^hook:/
     Vue.prototype.$on = function (event, fn) {
       var vm = this
@@ -3079,6 +3083,7 @@
     vm._isBeingDestroyed = false
   }
   function lifecycleMixin(Vue) {
+    debugger
     Vue.prototype._update = function (vnode, hydrating) {
       var vm = this
       var prevEl = vm.$el
@@ -3161,6 +3166,7 @@
     }
   }
   function mountComponent(vm, el, hydrating) {
+    debugger
     vm.$el = el
     if (!vm.$options.render) {
       // @ts-expect-error invalid type
@@ -3613,6 +3619,7 @@
           'supports `watch(source, cb, options?) signature.'
       )
     }
+    debugger
     return doWatch(source, cb, options)
   }
   function doWatch(source, cb, _a) {
@@ -4460,6 +4467,8 @@
    */
   var Watcher = /** @class */ (function () {
     function Watcher(vm, expOrFn, cb, options, isRenderWatcher) {
+      console.log(this)
+      debugger
       recordEffectScope(
         this,
         // if the active effect scope is manually created (not a component scope),
@@ -4975,6 +4984,7 @@
     // flow somehow has problems with directly declared definition object
     // when using Object.defineProperty, so we have to procedurally build up
     // the object here.
+    debugger
     var dataDef = {}
     dataDef.get = function () {
       return this._data
@@ -5092,7 +5102,9 @@
 
   var uid = 0
   function initMixin$1(Vue) {
+    debugger
     Vue.prototype._init = function (options) {
+      debugger
       var vm = this
       // a uid
       vm._uid = uid++
@@ -6289,6 +6301,7 @@
   }
 
   function Vue(options) {
+    debugger
     if (!(this instanceof Vue)) {
       warn$2('Vue is a constructor and should be called with the `new` keyword')
     }
@@ -6587,6 +6600,7 @@
   }
 
   function initGlobalAPI(Vue) {
+    debugger
     // config
     var configDef = {}
     configDef.get = function () {
@@ -6630,7 +6644,7 @@
     initExtend(Vue)
     initAssetRegisters(Vue)
   }
-
+  debugger
   initGlobalAPI(Vue)
   Object.defineProperty(Vue.prototype, '$isServer', {
     get: isServerRendering
@@ -11999,6 +12013,7 @@
     return CodegenState
   })()
   function generate(ast, options) {
+    debugger
     var state = new CodegenState(options)
     // fix #11483, Root level <script> tags should not be rendered.
     var code = ast
